@@ -109,6 +109,9 @@ div#content {
   line-height: 24px;
   color: #666;
 }
+.not-found {
+  margin-top: 30px;
+}
 .follower-info {
   font-size: 14px;
   margin: 0 0 6px 2px;
@@ -116,10 +119,10 @@ div#content {
 .follower-count {
   display: inline-block;
   padding: 2px 5px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
   line-height: 1;
   color: #fffefe;
   background-color: #FF1168;
-  border-radius: 20px;
 }
