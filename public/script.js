@@ -27,8 +27,6 @@ class App extends React.Component {
         // check if there are more for another request
         this.checkForMoreFollowers(pageNum + 1);
       });
-      
-      // copy current followers, append next batch
     })
   }
 
@@ -117,7 +115,22 @@ class Search extends React.Component {
   }
 
   render() {
-    return (<div><input className="search-field" value={this.state.inputText} placeholder="Search username" onChange={this.handleInputChange} onKeyPress={this.handleKeyPress}></input><input type="button" value="submit" onClick={this.handleSearchClick} /></div>);
+    return (<div>
+              <input 
+                className="search-field"
+                value={this.state.inputText}
+                placeholder="Search username"
+                onChange={this.handleInputChange}
+                onKeyPress={this.handleKeyPress}
+              >
+              </input>
+              <input 
+                type="button" 
+                value="submit"
+                className="submit-button"
+                onClick={this.handleSearchClick} 
+              />
+            </div>);
   }
 }
 
@@ -142,14 +155,16 @@ class Results extends React.Component {
     let userinfo = this.props.user;
     let followers = this.props.followers;
     let loadMoreFollowers;
+    // show "load more" button if there are more followers to load
     if (this.props.moreFollowers) {
       loadMoreFollowers = <input type="button" value="load more" onClick={this.loadMore}/>
     }
     if(userinfo) {
       return (
-        <div><div className="profile-pic"><img src={userinfo.avatar_url} /></div>
-          {userinfo.login}<br/>
-          Followers: {userinfo.followers} {loadMoreFollowers}
+        <div>
+          <div className="profile-pic"><img src={userinfo.avatar_url} /></div>
+          <div className="username">{userinfo.login}</div>
+          <div className="follower-info">Followers: <span className="follower-count">{userinfo.followers}</span> {loadMoreFollowers}</div>
           <ul>
             {this.props.followers.map(follower => {
               return <li className="follower" key={follower.id}><img src={follower.avatar_url} /></li>;
