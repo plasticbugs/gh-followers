@@ -98,6 +98,7 @@ class Search extends React.Component {
     }
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSearchClick = this.handleSearchClick.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   handleSearchClick() {
@@ -109,8 +110,14 @@ class Search extends React.Component {
     this.setState({inputText: event.target.value});
   }
 
+  handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      this.handleSearchClick();
+    }
+  }
+
   render() {
-    return (<div><input className="search-field" value={this.state.inputText} placeholder="Search username" onChange={this.handleInputChange}></input><input type="button" value="submit" onClick={this.handleSearchClick} /></div>);
+    return (<div><input className="search-field" value={this.state.inputText} placeholder="Search username" onChange={this.handleInputChange} onKeyPress={this.handleKeyPress}></input><input type="button" value="submit" onClick={this.handleSearchClick} /></div>);
   }
 }
 
