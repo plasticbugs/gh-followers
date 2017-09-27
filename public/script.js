@@ -52,8 +52,12 @@ class App extends React.Component {
         q: query
       }
     })
+    .catch(error => {
+      if(error.response.status === 404) {
+        this.setState({user: 404})
+      }
+    })
     .then(response => {
-      console.log(response.data);
       axios.get(response.data.followers_url)
       .then(followers => {
         this.setState({user: response.data, followers: followers.data, moreFollowers: true}, ()=>{
@@ -159,7 +163,7 @@ class Results extends React.Component {
     if (this.props.moreFollowers) {
       loadMoreFollowers = <input type="button" value="load more" onClick={this.loadMore}/>
     }
-    if(userinfo) {
+    if(userinfo && userinfo !== 404) {
       return (
         <div>
           <div className="profile-pic"><img src={userinfo.avatar_url} /></div>
@@ -171,10 +175,14 @@ class Results extends React.Component {
             })}
           </ul></div>
       );
+    } else if (userinfo === 404){
+      return (
+        <div className="username not-found">User not found. Please try another search.</div>
+      );
     } else {
       return (
         <div></div>
-      )
+      );
     }
   }
 }
