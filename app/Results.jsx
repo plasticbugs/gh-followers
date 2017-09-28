@@ -29,12 +29,15 @@ class Results extends React.Component {
         <div>
           <div className="profile-pic"><img src={userinfo.avatar_url} /></div>
           <div className="username"><a href={userinfo.html_url}>{userinfo.login}</a></div>
-          <div className="follower-info">Followers: <span className="follower-count">{userinfo.followers}</span> {loadMoreFollowers}</div>
+          <div className="follower-info">
+            Followers: <span className="follower-count">{userinfo.followers}</span> {loadMoreFollowers}
+          </div>
           <ul>
             {this.props.followers.map(follower => {
               return <li className="follower" key={follower.id}><img src={follower.avatar_url} title={follower.login} /></li>;
             })}
-          </ul></div>
+          </ul>
+        </div>
       );
     } else if (userinfo === "invalid"){
       return (
