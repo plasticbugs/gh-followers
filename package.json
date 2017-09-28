@@ -1,0 +1,7 @@
+{
+  "name": "profile-github",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Scott Moschella <scottmosch@gmail.com>",
+  "license": "MIT"
+}
