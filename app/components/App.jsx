@@ -1,8 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import axios from 'axios';
 const Search = require('./Search.jsx');
 const Results = require('./Results.jsx');
+import github from '../api/githubHelper.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,71 +17,34 @@ class App extends React.Component {
     this.checkForMoreFollowers = this.checkForMoreFollowers.bind(this);
   }
 
-  handleLoadMore(pageNum) {
-    axios.get(this.state.user.followers_url, {
-      params: {
-        page: pageNum
-      }
-    })
-    .catch(error => {
-      
-    })
-    .then(response => {
-      console.log(response.data);
+  handleLoadMore(pageNum, callback) {
+    let followerURL = this.state.user.followers_url;
+    github.getNextPageOfFollowers(pageNum, followerURL, (followers) => {
       let followersCopy = this.state.followers.map(follower => Object.assign({}, follower));
-      followersCopy = followersCopy.concat(response.data);
+      followersCopy = followersCopy.concat(followers);
       this.setState({followers: followersCopy}, ()=>{
-        // check if there are more for another request
         this.checkForMoreFollowers(pageNum + 1);
       });
-    })
+    });
   }
 
-  checkForMoreFollowers(onPage) {
-    if(!onPage) {
-      onPage = 2;
-    }
-    axios.get(this.state.user.followers_url, {
-      params: {
-        page: onPage
-      }
-    })
-    .catch(error => {
-      throw(error);
-    })
-    .then(response => {
-      if (response.data.length === 0) {
+  checkForMoreFollowers(onPage = 2) {
+    let followerURL = this.state.user.followers_url;
+    github.getNextPageOfFollowers(onPage, followerURL, (followers) => {
+      if(followers.length === 0) {
         this.setState({moreFollowers: false});
       }
-    })
+    });
   }
 
   handleSearch(query) {
-    axios.get('https://api.github.com/users/' + query,{
-      params: {
-        q: query
-      }
-    })
-    .catch(error => {
-      if(error) {
-        this.setState({user: "invalid"})
-        throw(error);
-      }
-    })
-    .then(response => {
-      console.log(response);
-      if(response.status === 200) {
-        console.log(response.data);
-        axios.get(response.data.followers_url)
-        .then(followers => {
-          this.setState({user: response.data, followers: followers.data, moreFollowers: true}, ()=>{
-            this.checkForMoreFollowers();
-          })
-        })
-      } else {
-        this.setState({user: "invalid"});
-      }
-    })
+    github.getUserInfo(query, (user, followers) => {
+      this.setState({user: user, followers: followers, moreFollowers: true}, ()=>{
+        if (user !== "invalid") {
+          this.checkForMoreFollowers();
+        }
+      });
+    });
   }
 
   render() {
@@ -108,7 +71,4 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('main')
-);
+module.exports = App;
