@@ -7,22 +7,23 @@ let headers = new Headers();
 let base64 = require('base-64');
 
 headers.append('Authorization', 'Basic ' + base64.encode(username + ":" + password));
+headers.append('X-GitHub-OTP', process.env.OTP)
 
 const getUserInfo = function(query, cb) {
 
 
-  fetch(url + query, {method:'GET',
-          headers: headers,
-          //credentials: 'user:passwd'
-        })
-  .then(response => response.json())
-  .then(json => console.log(json));
+  // fetch(url + query, {method:'GET',
+  //         headers: headers,
+  //         //credentials: 'user:passwd'
+  //       })
+  // .then(response => response.json())
+  // .then(json => console.log(json));
 
 
   axios.get('https://api.github.com/users/' + query, {
-    auth: { 
-      username: process.env.GITHUB_USERNAME, 
-      password: process.env.GITHUB_TOKEN }
+    // auth: { 
+    //   username: process.env.GITHUB_USERNAME, 
+    //   password: process.env.GITHUB_TOKEN }
   })
   .catch(error => {
     if(error) {
@@ -34,9 +35,9 @@ const getUserInfo = function(query, cb) {
     if(response && response.status === 200) {
       console.log(JSON.stringify(response.data));
       axios.get(response.data.followers_url, {
-        auth: { 
-          username: process.env.GITHUB_USERNAME, 
-          password: process.env.GITHUB_TOKEN }
+        // auth: { 
+        //   username: process.env.GITHUB_USERNAME, 
+        //   password: process.env.GITHUB_TOKEN }
       })
       .then(followers => {
         cb(response.data, followers.data);
@@ -52,8 +53,8 @@ const getNextPageOfFollowers = function(pageNum, followerURL, cb) {
     params: {
       page: pageNum
     },
-    auth: { username: process.env.GITHUB_USERNAME,
-      password: process.env.GITHUB_TOKEN }
+    // auth: { username: process.env.GITHUB_USERNAME,
+    //   password: process.env.GITHUB_TOKEN }
   })
   .catch(error => {
     throw(error);
