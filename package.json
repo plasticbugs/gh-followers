@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "axios-mock-adapter": "^1.9.0",
     "babel-core": "^6.26.0",
     "babel-jest": "^21.2.0",
     "babel-loader": "^7.1.2",
@@ -31,6 +32,7 @@
     "enzyme-adapter-react-16": "^1.0.0",
     "jest": "^21.2.1",
     "mock-require": "^2.0.2",
+    "moxios": "^0.4.0",
     "react-test-renderer": "16",
     "sinon": "^4.0.0"
   }

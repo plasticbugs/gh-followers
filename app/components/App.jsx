@@ -10,22 +10,37 @@ class App extends React.Component {
       user: null,
       followers: null,
       nextPage: null,
-      moreFollowers: false
+      moreFollowers: false,
+      loading: false,
+      currentPage: null
     }
     this.handleSearch = this.handleSearch.bind(this);
     this.handleLoadMore = this.handleLoadMore.bind(this);
     this.checkForMoreFollowers = this.checkForMoreFollowers.bind(this);
   }
 
-  handleLoadMore(pageNum, callback) {
-    let followersCopy = this.state.followers.map(follower => Object.assign({}, follower));
-    followersCopy = followersCopy.concat(this.state.nextPage);
-    this.setState({followers: followersCopy}, ()=>{
-      this.checkForMoreFollowers(pageNum + 1);
+  handleLoadMore() {
+    let newPage = this.state.currentPage + 1;
+    // disable load button and increase page counter
+    this.setState({loading: true, currentPage: newPage}, () => {
+      // append eager-loaded followers
+      let followersCopy = this.state.followers.map(follower => Object.assign({}, follower));
+      followersCopy = followersCopy.concat(this.state.nextPage);
+      this.setState({followers: followersCopy}, ()=>{
+        // eager load the next page of followers and hide load button if none left
+        this.checkForMoreFollowers(newPage, (followers) => {
+          if (followers.length === 0 ) {
+            // hide the button
+            this.setState({moreFollowers: false, loading: false});
+          } else {
+            this.setState({moreFollowers: true, loading: false});
+          }
+        });
+      });
     });
   }
 
-  checkForMoreFollowers(onPage = 2) {
+  checkForMoreFollowers(onPage = 2, cb) {
     let followerURL = this.state.user.followers_url;
     axios.get('/api/followers', {
       params: {
@@ -34,16 +49,14 @@ class App extends React.Component {
       }
     })
     .then(response => {
-      if (response.data.length === 0) {
-        this.setState({moreFollowers: false});
-      } else {
-        this.setState({nextPage: response.data, moreFollowers: true});
-      }
+      this.setState({nextPage: response.data}, ()=> {
+        cb(response.data);
+      });
     })
   }
 
-  handleSearch(query) {
-    this.setState({nextPage: null});
+  handleSearch(query, callback) {
+    this.setState({nextPage: null, currentPage: 2});
     axios.get('/api/user', {
       params: {
         username: query
@@ -55,10 +68,23 @@ class App extends React.Component {
           user: response.data.user,
           followers: response.data.followers
         }, ()=> {
-          this.checkForMoreFollowers();
+          this.checkForMoreFollowers(this.state.currentPage, (followers) => {
+            if(callback) {
+              callback(response.data, followers)
+            }
+            if(followers.length === 0) {
+              // hide the button
+              this.setState({moreFollowers: false});              
+            } else {
+              this.setState({moreFollowers: true});
+            }
+          });
         });
       } else {
         this.setState({user: "invalid"});
+        if(callback){
+          callback();
+        }
       }
     })
   }
@@ -80,6 +106,8 @@ class App extends React.Component {
             followers={this.state.followers}
             loadMore={this.handleLoadMore}
             moreFollowers={this.state.moreFollowers}
+            loadThisUser={this.handleSearch}
+            loading={this.state.loading}
           />
         </div>
       </div>

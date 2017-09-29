@@ -26,7 +26,7 @@ class Search extends React.Component {
     }
   }
 
-  render() {
+  render() {   
     return (<div>
               <input 
                 className="search-field"

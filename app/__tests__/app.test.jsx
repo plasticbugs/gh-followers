@@ -1,70 +1,69 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-const App = require('../components/App.jsx');
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import MockAdapter from 'axios-mock-adapter';
 import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
-import github from '../api/githubHelper.js';
+import axios from 'axios';
+import moxios from 'moxios';
+
+const App = require('../components/App.jsx');
 var mockuserinfo = require('../__mockData__/userinfo.js').user
 var mockfollowerInfo = require ('../__mockData__/followers.js').followerInfo
-
-const realSetTimeout = setTimeout;
-jest.useFakeTimers();
-
-jest.mock('../api/githubHelper.js', ()=>({
-  getUserInfo: (name, cb) => {
-    if(name === "bad lookup" || name === null  || name === "") {
-      cb("invalid", null);
-    } else {
-      cb(mockuserinfo, [])
-    }
-  },
-  getNextPageOfFollowers: (pageNum, followerURL, cb) => {
-    cb(mockfollowerInfo);
-  }
-}))
 
 configure({ adapter: new Adapter() });
 
 describe('App', () => {
+  beforeEach(function () {
+    moxios.install()
+  })
+  afterEach(function () {
+    moxios.uninstall()
+  })
   it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(<App />, div);
   });
   it('sets user to an object and gets and array of followers if a search is successful', done => {
     const component = shallow(<App />);
-    component.instance().handleSearch('holman');
-    github.getUserInfo('plasticbugs', (user, followers) => {
-      expect(typeof user).toEqual('object');
-      expect(Array.isArray(followers)).toBeTruthy();
+    let mock = new MockAdapter(axios);
+    let data = {
+      user: mockuserinfo,
+      followers: mockfollowerInfo
+    }
+    mock.onGet('/api/user').reply(200, data)
+    mock.onGet('/api/followers').reply(200, mockfollowerInfo)
+    component.instance().handleSearch('holman', (userinfo, followers) => {
+      expect(component.state().user.login).toEqual('plasticbugs');
+      expect(component.state().followers.length).toEqual(30);
       done();
-    })
+    });
   });
-  it('sets user to "invalid" if a search string has a username that does not exist', done => {
-    github.getUserInfo('bad lookup', (user, followers) => {
-      expect(user).toEqual('invalid');
-      done();
-    })
-  });
-  it('sets user to "invalid" if a search string is empty', () => {
-    github.getUserInfo('', (user, followers) => {
-      expect(user).toEqual('invalid');
-    })
-  });
-  it('Gets first an array of followers when getNextPage is called', () => {
-    github.getNextPageOfFollowers(2, 'followerurl', (followers) => {
-      expect(followers).toHaveLength(30);
-    })
-  });
-  it('loads more followers when load more button is pressed', () => {
+  it('sets the user state to "invalid" if search is unsuccessful', done => {
     const component = mount(<App />);
-    component.instance().handleSearch('holman');
-    setTimeout(2000, () => {
-      component.find(".submit-button").simulate("click");
-      setTimeout(2000, () => {
-        expect(component.state().followers.length).toEqual(60);
-      })
+    let mock = new MockAdapter(axios);
+    let data = {};
+    mock.onGet('/api/user').reply(200, data);
+    component.instance().handleSearch('bad lookup', (userinfo, followers) => { 
+      expect(component.state().user).toEqual("invalid");
+      expect(component.state().user.login).toBeUndefined();
+      expect(component.state().followers).toBeNull();
+      done();
+    });
+  });
+  it('eager loads the next page of followers after a successful search', done => {
+    const component = shallow(<App />);
+    let mock = new MockAdapter(axios);
+    let data = {
+      user: mockuserinfo,
+      followers: mockfollowerInfo
+    }
+    mock.onGet('/api/user').reply(200, data)
+    mock.onGet('/api/followers').reply(200, mockfollowerInfo)
+    component.instance().handleSearch('bad lookup', (userinfo, followers) => {
+      expect(component.state().nextPage).toHaveLength(30);
+      done();
     })
-  })
+  });
 });
