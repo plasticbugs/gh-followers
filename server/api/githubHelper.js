@@ -34,7 +34,6 @@ const getUserInfo = function(query, cb) {
 }
 
 const getNextPageOfFollowers = function(pageNum, followerURL, cb) {
-  console.log("getting page: ", pageNum, " ", followerURL);
   axios.get(followerURL, {
     params: {
       page: pageNum
