@@ -1,5 +1,6 @@
 # Github Followers
 [Link to the deployed application on Heroku](https://gh-follower-demo-app.herokuapp.com/)
+
 [Link to the repo](https://github.com/plasticbugs/gh-followers)
 
 ## Problem:
@@ -18,6 +19,6 @@ I chose React because it's a fast and versatile front-end framework that I reall
 
 I would have written more test coverage against the frontend code. I would have also implemented more features like paginating the followers and creating routes with React Router so that pages could be bookmarked.
 
-### Issues I ran into
+### Issues I Ran Into
 
 I ran into rate-limiting issues with the Github API while testing, which led me to use Basic Auth. Basic Auth doesn't work when you have 2-factor authentication on your account, so that caused requests to 401. Ultimately, for the sake of time, I removed authentication from the deployed app.
