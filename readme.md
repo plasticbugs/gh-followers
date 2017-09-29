@@ -17,6 +17,13 @@ I decided to eager load the next page of user followers, so that clicking the "l
 
 I also implemented the ability to click on a follower avatar to see that user and their followers. If you click on a searched user's profile name, it loads their Github page.
 
+### UI Decisions
+I used a simple flexbox layout for this application with a fixed-width sidebar.
+
+The "load more" button is disabled while loading in more followers.
+
+The user can either click "submit" or press enter to submit the contents of the search input field.
+
 ### Why Node?
 I've been working with Node.js for a while and enjoy using it quite a bit. It's especially handy when I'm working with an application that is likely to change and grow more complex over time and will go through multiple iterations. It's highly configurable and is fairly easy to deploy and write tests against.
 
