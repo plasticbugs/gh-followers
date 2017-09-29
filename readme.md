@@ -1,4 +1,6 @@
 # Github Followers
+[Link to the deployed application on Heroku](https://gh-follower-demo-app.herokuapp.com/)
+[Link to the repo](https://github.com/plasticbugs/gh-followers)
 
 ## Problem:
 Create a service that allows the user to search for a Github username. A successful search should return the username, follower count and the first page of followers' avatars. A "load more" button should fetch the next page of results. The button should no longer display when there are no more pages to fetch.
@@ -14,6 +16,8 @@ I chose React because it's a fast and versatile front-end framework that I reall
 
 ### If I Had More Time...
 
-I would have likely normalized instead of reset the CSS, but I feel like normalization would have required writing more custom CSS to do things like remove list item bullets and fix spacing issues.
+I would have written more test coverage against the frontend code. I would have also implemented more features like paginating the followers and creating routes with React Router so that pages could be bookmarked.
 
-I would have also written some basic tests for the backend code, but since at this time it's only serving up static assets, I felt it would be out of scope for a project with this amount of complexity.
+### Issues I ran into
+
+I ran into rate-limiting issues with the Github API while testing, which led me to use Basic Auth. Basic Auth doesn't work when you have 2-factor authentication on your account, so that caused requests to 401. Ultimately, for the sake of time, I removed authentication from the deployed app.
