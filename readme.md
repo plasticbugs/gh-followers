@@ -39,6 +39,6 @@ I created a YouTube to MP3 podcast generator called [Podcasty](https://github.co
 
 ![podcast gif](https://raw.githubusercontent.com/plasticbugs/podcasty/master/demo.gif)
 
-I created many features and architected the backend for [Ynck](http://www.ynck.io), a social network for Tattoo enthusiasts.
+I wrote several key features and architected the backend for [Ynck](http://www.ynck.io), a social network for Tattoo enthusiasts.
 
 ![ynck screenshot](https://media.licdn.com/media-proxy/ext?w=800&h=800&f=n&hash=GwrTXYMha51SX4LTHV%2BXyKR9o1U%3D&ora=1%2CaFBCTXdkRmpGL2lvQUFBPQ%2CxAVta9Er0Vinkhwfjw8177yE41y87UNCVordEGXyD3u0qYrdf3HtfsfZL-TzuQ4RcC0clFAyKvL6QzflD5S-L43meNtx3Z7gJo24ZxUBbFImi24)
