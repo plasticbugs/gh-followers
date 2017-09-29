@@ -1,6 +1,24 @@
 import axios from 'axios';
+let url = 'https://api.github.com/users/';
+let username = process.env.GITHUB_USERNAME;
+let password = process.env.GITHUB_TOKEN;
+
+let headers = new Headers();
+let base64 = require('base-64');
+
+headers.append('Authorization', 'Basic ' + base64.encode(username + ":" + password));
 
 const getUserInfo = function(query, cb) {
+
+
+  fetch(url + query, {method:'GET',
+          headers: headers,
+          //credentials: 'user:passwd'
+        })
+  .then(response => response.json())
+  .then(json => console.log(json));
+
+
   axios.get('https://api.github.com/users/' + query, {
     auth: { 
       username: process.env.GITHUB_USERNAME, 
