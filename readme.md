@@ -36,4 +36,9 @@ I ran into rate-limiting issues with the Github API while testing, which led me 
 A long time ago, I created a fork of GIMP called [Gimpshop](https://en.wikipedia.org/wiki/GIMPshop). Thousands of people have downloaded and used it as an alternative to Adobe Photoshop.
 
 I created a YouTube to MP3 podcast generator called [Podcasty](https://github.com/plasticbugs/podcasty). It converts YouTube channels into iTunes-friendly XML feeds.
-![podcast demo](https://raw.githubusercontent.com/plasticbugs/podcasty/master/demo.gif)
+
+![podcast gif](https://raw.githubusercontent.com/plasticbugs/podcasty/master/demo.gif)
+
+I created many features and architected the backend for [Ynck](http://www.ynck.io), a social network for Tattoo enthusiasts.
+
+![ynck screenshot](https://media.licdn.com/media-proxy/ext?w=800&h=800&f=n&hash=GwrTXYMha51SX4LTHV%2BXyKR9o1U%3D&ora=1%2CaFBCTXdkRmpGL2lvQUFBPQ%2CxAVta9Er0Vinkhwfjw8177yE41y87UNCVordEGXyD3u0qYrdf3HtfsfZL-TzuQ4RcC0clFAyKvL6QzflD5S-L43meNtx3Z7gJo24ZxUBbFImi24)
