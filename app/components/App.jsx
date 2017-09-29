@@ -30,15 +30,11 @@ class App extends React.Component {
 
   checkForMoreFollowers(onPage = 2) {
     let followerURL = this.state.user.followers_url;
-    // this timeout fixes an odd bug where if user has 31 followers, the API responds with
-    // and empty array if "load" is pressed too quickly after the first batch of followers is requested.
-    setTimeout(()=>{
-      github.getNextPageOfFollowers(onPage, followerURL, (followers) => {
-        if(followers.length === 0) {
-          this.setState({moreFollowers: false});
-        }
-      });
-    }, 1000);
+    github.getNextPageOfFollowers(onPage, followerURL, (followers) => {
+      if(followers.length === 0) {
+        this.setState({moreFollowers: false});
+      }
+    });
   }
 
   handleSearch(query) {
