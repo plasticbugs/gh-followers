@@ -1,7 +1,9 @@
 # Github Followers
-[Link to the deployed application on Heroku](https://gh-follower-demo-app.herokuapp.com/)
+[Deployed application on Heroku](https://gh-follower-demo-app.herokuapp.com/)
 
-[Link to the repo](https://github.com/plasticbugs/gh-followers)
+[Github Repo for this demo](https://github.com/plasticbugs/gh-followers)
+
+[My LinkedIn](https://www.linkedin.com/in/scott-moschella/)
 
 ## Problem:
 Create a service that allows the user to search for a Github username. A successful search should return the username, follower count and the first page of followers' avatars. A "load more" button should fetch the next page of results. The button should no longer display when there are no more pages to fetch.
@@ -13,7 +15,7 @@ I used Jest/Enzyme for my testing framework. I don't have a lot of experience te
 
 I decided to eager load the next page of user followers, so that clicking the "load more" button would feel a bit snappier.
 
-I also implemented the ability to click on a follower avatar to see that user and their followers.
+I also implemented the ability to click on a follower avatar to see that user and their followers. If you click on a searched user's profile name, it loads their Github page.
 
 ### Why Node?
 I've been working with Node.js for a while and enjoy using it quite a bit. It's especially handy when I'm working with an application that is likely to change and grow more complex over time and will go through multiple iterations. It's highly configurable and is fairly easy to deploy and write tests against.
@@ -28,3 +30,10 @@ If I had more time, I would have written more test coverage against the frontend
 ### Issues I Ran Into
 
 I ran into rate-limiting issues with the Github API while testing, which led me to use Basic Auth. Unfortunately, Basic Auth doesn't work when you have 2-factor authentication on your account, which caused requests to 401. Ultimately, for simplicity and the sake of time, I turned off 2FA on my Github account so I could continue to use Basic Auth for accessing the Github API.
+
+### Other Projects I'm Proud Of!
+
+A long time ago, I created a fork of GIMP called [Gimpshop](https://en.wikipedia.org/wiki/GIMPshop). Thousands of people have downloaded and used it as an alternative to Adobe Photoshop.
+
+I created a YouTube to MP3 podcast generator called [Podcasty](https://github.com/plasticbugs/podcasty). It converts YouTube channels into iTunes-friendly XML feeds.
+![podcast demo](https://raw.githubusercontent.com/plasticbugs/podcasty/master/demo.gif)
