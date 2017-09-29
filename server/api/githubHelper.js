@@ -1,32 +1,34 @@
-import axios from 'axios';
-let url = 'https://api.github.com/users/';
+const axios = require('axios');
+
 let username = process.env.GITHUB_USERNAME;
 let password = process.env.GITHUB_TOKEN;
 
 const getUserInfo = function(query, cb) {
   axios.get('https://api.github.com/users/' + query, {
-    // auth: { 
-    //   username: process.env.GITHUB_USERNAME, 
-    //   password: process.env.GITHUB_TOKEN }
+    auth: {
+      username: username,
+      password: password
+    }
   })
   .catch(error => {
     if(error) {
-      cb("invalid", null);
-      throw(error);
+      cb(error);
     }
   })
   .then(response => {
     if(response && response.status === 200) {
       axios.get(response.data.followers_url, {
-        // auth: { 
-        //   username: process.env.GITHUB_USERNAME, 
-        //   password: process.env.GITHUB_TOKEN }
+        auth: {
+          username: username,
+          password: password
+        }
       })
       .then(followers => {
-        cb(response.data, followers.data);
+        cb(null, {user: response.data, followers: followers.data});
       })
     } else {
-      cb("invalid", null);
+      const error = new Error('Bad response from API: ', response);
+      cb(error);
     }
   })
 }
@@ -36,14 +38,16 @@ const getNextPageOfFollowers = function(pageNum, followerURL, cb) {
     params: {
       page: pageNum
     },
-    // auth: { username: process.env.GITHUB_USERNAME,
-    //   password: process.env.GITHUB_TOKEN }
+    auth: {
+      username: username,
+      password: password
+    }
   })
   .catch(error => {
-    throw(error);
+    cb(error);
   })
   .then(response => {
-    cb(response.data);
+    cb(null, response.data);
   });
 }
 

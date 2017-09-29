@@ -21,10 +21,10 @@ class Results extends React.Component {
     let followers = this.props.followers;
     let loadMoreFollowers;
     // show "load more" button if there are more followers to load
-    if (this.props.moreFollowers) {
-      loadMoreFollowers = <input type="button" value="load more" onClick={this.loadMore}/>
-    }
     if(userinfo && userinfo !== "invalid") {
+      if (this.props.moreFollowers) {
+        loadMoreFollowers = <input type="button" value="load more" onClick={this.loadMore}/>
+      }
       return (
         <div>
           <div className="profile-pic"><img src={userinfo.avatar_url} /></div>
